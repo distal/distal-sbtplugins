@@ -3,19 +3,19 @@ import sbt._
 import Keys._
 
 object DistalLocalRunner extends Plugin {
-  import LocalRunnerKeys._
+  //import LocalRunnerKeys._
   val basePort = 4000 // TODO: make configurable
 
-  override lazy val settings = localDistalSettings
+  // override lazy val settings = { println("loading the settings"); distalLocalRunnerSettings }
 
-  object LocalRunnerKeys {
-    val startProtocolsLocal = TaskKey[Unit]("local-start-protocols", "starts the protocols locally")
-    lazy val localProtocolsMap = SettingKey[Map[String,Seq[String]]]("local-protocols-map", "map ports to protocol classes")
-  }
+  //object LocalRunnerKeys {
+  lazy val startProtocolsRun = TaskKey[Unit]("local-protocols-run", "starts the protocols locally")
+  lazy val localProtocolsMap = SettingKey[Map[String,Seq[String]]]("local-protocols-map", "map ports to protocol classes")
+  //}
 
 
-  val localDistalSettings = Seq(
-    startProtocolsLocal <<= (streams,localProtocolsMap,fullClasspath in Runtime, packageBin in Compile) map {
+  val distalLocalRunnerSettings = Seq(
+    startProtocolsRun <<= (streams,localProtocolsMap,fullClasspath in Runtime, packageBin in Compile) map {
       (out,protocols,classpath :Classpath,packageBin) =>
       val cpString = classpath.map(_.data).mkString(":")
       val locations =
@@ -32,6 +32,7 @@ object DistalLocalRunner extends Plugin {
       processes.foreach(_.exitValue)
       println("done")
     }
+    //localProtocolsMap := Map()
   )
 
 }

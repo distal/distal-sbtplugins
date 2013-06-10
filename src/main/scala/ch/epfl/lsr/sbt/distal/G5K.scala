@@ -3,30 +3,27 @@ import sbt._
 import Keys._
 import classpath.ClasspathUtilities
 
-
-//import sbtassembly.Plugin.{ AssemblyKeys => Ass}
-
 object G5kPlugin extends Plugin {
-  import g5kKeys._
+  //import g5kKeys._
   import RemoteHelpers._
 
-  object g5kKeys {
-    val g5kDeploy = TaskKey[Unit]("g5kdeploy")
-    val g5kRun    = TaskKey[Int]("g5krun")
+  //object g5kKeys {
+    val g5kDeploy = TaskKey[Unit]("g5k-deploy")
+    val g5kRun    = TaskKey[Int]("g5k-run")
 
 //    val g5kUser = SettingKey[String]("g5kuser")
-    val g5kSite = SettingKey[String]("site")
-    val g5kCluster = SettingKey[String]("cluster")
-    val g5kDst  = SettingKey[String]("dst")
+    val g5kSite = SettingKey[String]("g5k-site")
+    val g5kCluster = SettingKey[String]("g5k-cluster")
+    val g5kDst  = SettingKey[String]("g5k-dst")
 //    val g5kJar  = SettingKey[File]("g5k-jar")
 //    val g5kOpts = SettingKey[String]("g5k-oarsub-options")
     val g5kRunOne = SettingKey[String]("g5k-run-one-script")
     val g5kRunAll = SettingKey[String]("g5k-run-all-script")
     val g5kNodes = SettingKey[Seq[Int]]("g5k-nodes-seq")
-  }
+//}
 
 
-  val g5ksettings = Seq(
+  lazy val g5kSettings = Seq(
     g5kDeploy <<= (streams,g5kDst, //g5kUser,
       g5kSite, fullClasspath in Runtime, packageBin in Compile,mainClass in Runtime,resourceDirectory in Runtime) map {
       (out,dst,sitename,cp :Classpath, binJar,main,resources) =>
@@ -63,7 +60,7 @@ object G5kPlugin extends Plugin {
         ssh(out.log,site, cmds :_*)
        //ssh(out.log,user,site,"rm -rf logs/ out.txt; date >> out.txt; oarsub -l nodes=4 -E out.txt -O out.txt async-rounds/run-all.sh; tail -f out.txt")
     } dependsOn g5kDeploy,
-    g5kRunAll := "run-all.sh",
-    g5kRunOne := "run-one.sh"
+    g5kRunAll := "g5k-run-all.sh",
+    g5kRunOne := "g5k-run-one.sh"
   )
 }

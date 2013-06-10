@@ -1,6 +1,6 @@
 sbtPlugin := true
 
-organization := "ch.epfl.lsr.sbt"
+organization := "ch.epfl.lsr"
 
 name := "distal-sbt-plugins"
 
