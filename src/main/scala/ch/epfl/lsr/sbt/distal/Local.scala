@@ -9,13 +9,13 @@ object DistalLocalRunner extends Plugin {
   // override lazy val settings = { println("loading the settings"); distalLocalRunnerSettings }
 
   //object LocalRunnerKeys {
-  lazy val startProtocolsRun = TaskKey[Unit]("local-protocols-run", "starts the protocols locally")
-  lazy val localProtocolsMap = SettingKey[Map[String,Seq[String]]]("local-protocols-map", "map ports to protocol classes")
+  lazy val distalRunLocal = TaskKey[Unit]("distal-run-local", "starts the protocols locally")
+  lazy val distalProtocolsMap = SettingKey[Map[String,Seq[String]]]("distal-protocols-map", "map ports to protocol classes")
   //}
 
 
   val distalLocalRunnerSettings = Seq(
-    startProtocolsRun <<= (streams,localProtocolsMap,fullClasspath in Runtime, packageBin in Compile) map {
+    distalRunLocal <<= (streams,distalProtocolsMap,fullClasspath in Runtime, packageBin in Compile) map {
       (out,protocols,classpath :Classpath,packageBin) =>
       val cpString = classpath.map(_.data).mkString(":")
       val locations =
